@@ -8,10 +8,12 @@ import {
   loadMoreMovies,
 } from "../actions";
 import Home from "../components/Home/Home";
+
 class HomeContainer extends Component {
   componentDidMount() {
     this.getMovies();
   }
+
   getMovies() {
     this.props.showLoadingSpinner();
     this.props.getPopularMovies();
@@ -25,9 +27,7 @@ class HomeContainer extends Component {
 
   loadMoreMovies = () => {
     const { searchTerm, currentPage } = this.props;
-
     this.props.showLoadingSpinner();
-
     this.props.loadMoreMovies(searchTerm, currentPage);
   };
 
