@@ -7,10 +7,10 @@ export const LOAD_MORE_MOVIES = "LOAD_MORE_MOVIES";
 export const CLEAR_MOVIES = "CLEAR_MOVIES";
 
 //action types & action creators for both
-export const SHOW_LOADING_SPINER = "SHOW_LOADING_SPINER";
+export const SHOW_LOADING_SPINNER = "SHOW_LOADING_SPINER";
 export function showLoadingSpinner() {
   return {
-    type: SHOW_LOADING_SPINER,
+    type: SHOW_LOADING_SPINNER,
     payload: null,
   };
 }

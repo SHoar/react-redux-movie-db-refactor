@@ -1,36 +1,57 @@
-class Home extends Component {
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import {
+  getPopularMovies,
+  showLoadingSpinner,
+  searchMovies,
+  clearMovies,
+  loadMoreMovies,
+} from "../actions";
+import Home from "../components/Home/Home";
+class HomeContainer extends Component {
   componentDidMount() {
-    if (sessionStorage.getItem("HomeState")) {
-      let state = JSON.parse(sessionStorage.getItem("HomeState"));
-      this.setState({ ...state });
-    } else {
-      this.setState({ loading: true });
-      this.fetchItems(endpoint);
-    }
+    this.getMovies();
+  }
+  getMovies() {
+    this.props.showLoadingSpinner();
+    this.props.getPopularMovies();
   }
 
-  searchItems = (searchTerm) => {
-    let endpoint = "";
-    this.setState({
-      movies: [],
-      loading: true,
-      searchTerm,
-    });
-
-    this.fetchItems(endpoint);
+  searchMovies = (searchTerm) => {
+    this.props.clearMovies();
+    this.props.showLoadingSpinner();
+    this.props.searchMovies(searchTerm);
   };
 
-  loadMoreItems = () => {
-    // ES6 Destructuring the state
-    const { searchTerm, currentPage } = this.state;
+  loadMoreMovies = () => {
+    const { searchTerm, currentPage } = this.props;
 
-    let endpoint = "";
-    this.setState({ loading: true });
-    this.fetchItems(endpoint);
+    this.props.showLoadingSpinner();
+
+    this.props.loadMoreMovies(searchTerm, currentPage);
   };
 
-  fetchItems = (endpoint) => {
-    // ES6 Destructuring the state
-    const { movies, heroImage, searchTerm } = this.state;
-  };
+  render() {
+    return (
+      <Home
+        {...this.props}
+        searchMovies={this.searchMovies}
+        loadMoreMovies={this.loadMoreMovies}
+      />
+    );
+  }
 }
+
+const mapStateToProps = (state) => {
+  return state.home;
+};
+
+const mapDispatchToProps = {
+  getPopularMovies,
+  showLoadingSpinner,
+  searchMovies,
+  clearMovies,
+  loadMoreMovies,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeContainer);

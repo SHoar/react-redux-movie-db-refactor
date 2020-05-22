@@ -3,17 +3,17 @@ import {
   GET_POPULAR_MOVIES,
   LOAD_MORE_MOVIES,
   SEARCH_MOVIES,
-  SHOW_LOADING_SPINER,
+  SHOW_LOADING_SPINNER,
 } from "../actions";
 
-export const initialState = (state = {
+export const initialState = {
   movies: [],
   heroImage: null,
   loading: false,
   currentPage: 0,
   totalPages: 0,
   searchTerm: "",
-});
+};
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -53,8 +53,9 @@ export default function (state = initialState, action) {
         movies: [],
       };
 
-    case SHOW_LOADING_SPINER:
+    case SHOW_LOADING_SPINNER:
       return { ...state, loading: true };
+
     default:
       return state;
   }
