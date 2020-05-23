@@ -31,10 +31,10 @@ export default function (state = initialState, action) {
     case LOAD_MORE_MOVIES:
       return {
         ...state,
-        movies: [...state.movies, ...state.action.payload.results],
+        movies: [...state.movies, ...action.payload.results],
         loading: false,
         currentPage: action.payload.page,
-        totalPage: action.payload.total_pages,
+        totalPages: action.payload.total_pages,
       };
 
     case SEARCH_MOVIES:
