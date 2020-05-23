@@ -4,6 +4,7 @@ import {
   LOAD_MORE_MOVIES,
   SEARCH_MOVIES,
   SHOW_LOADING_SPINNER,
+  SET_POPULAR_PERSISTED_STATE,
 } from "../actions";
 
 export const initialState = {
@@ -17,6 +18,12 @@ export const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case SET_POPULAR_PERSISTED_STATE:
+      return {
+        ...state,
+        ...action.payload,
+      };
+
     case GET_POPULAR_MOVIES:
       return {
         ...state,

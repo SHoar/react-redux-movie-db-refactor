@@ -5,6 +5,12 @@ export const GET_POPULAR_MOVIES = "GET_POPULAR_MOVIES";
 export const SEARCH_MOVIES = "SEARCH_MOVIES";
 export const LOAD_MORE_MOVIES = "LOAD_MORE_MOVIES";
 export const CLEAR_MOVIES = "CLEAR_MOVIES";
+export const SET_POPULAR_PERSISTED_STATE = "SET_POPULAR_PERSISTED_STATE";
+
+//action types for movie
+export const GET_MOVIE = "GET_MOVIE";
+export const CLEAR_MOVIE = "CLEAR_MOVIE";
+export const SET_MOVIE_PERSISTED_STATE = "SET_MOVIE_PERSISTED_STATE";
 
 //action types & action creators for both
 export const SHOW_LOADING_SPINNER = "SHOW_LOADING_SPINER";
@@ -14,8 +20,64 @@ export function showLoadingSpinner() {
     payload: null,
   };
 }
+// action creators for Movie
 
-// action creators
+export function setMoviePersistedState(state) {
+  return {
+    type: SET_MOVIE_PERSISTED_STATE,
+    payload: state,
+  };
+}
+
+export function clearMovie() {
+  return {
+    type: CLEAR_MOVIE,
+    payload: null,
+  };
+}
+
+export function getMovie(movieId) {
+  let endpoint = `${API_URL}movie/${movieId}?api_key=${API_KEY}&language=en-US`;
+  let newState = {};
+
+  const request = fetch(endpoint)
+    .then((result) => result.json())
+    .then((result) => {
+      if (result.status_code) {
+        // If we don't find any movie
+        return newState;
+      } else {
+        newState = { movie: result };
+        endpoint = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`;
+        return fetch(endpoint)
+          .then((result) => result.json())
+          .then((result) => {
+            const directors = result.crew.filter(
+              (member) => member.job === "Director"
+            );
+
+            newState.actors = result.cast;
+            newState.directors = directors;
+
+            return newState;
+          });
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+
+  return {
+    type: GET_MOVIE,
+    payload: request,
+  };
+}
+
+// action creators for Home
+export function setPopularPersistedState(state) {
+  return {
+    type: SET_POPULAR_PERSISTED_STATE,
+    payload: state,
+  };
+}
 export function getPopularMovies() {
   const endpoint = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
 
